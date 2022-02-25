@@ -24,28 +24,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
-name = "bunt"
-version = "0.2.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "192bac6c13e04373feb683e4438cbc156e6bbe432f614a9d6247445108fc5551"
-dependencies = [
- "bunt-macros",
- "termcolor",
-]
-
-[[package]]
-name = "bunt-macros"
-version = "0.2.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "181ae31bbb8b46f840a70dc1323ad938f2cd7a504e7adc98d6fe58094900a680"
-dependencies = [
- "litrs",
- "proc-macro2",
- "quote",
- "unicode-xid",
-]
-
-[[package]]
 name = "bytesize"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -107,9 +85,9 @@ dependencies = [
 
 [[package]]
 name = "getrandom"
-version = "0.2.4"
+version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "418d37c8b1d42553c93648be529cb70f920d3baf8ef469b74b9638df426e0b4c"
+checksum = "d39cd93900197114fa1fcb7ae84ca742095eed9442088988ae74fa744e930e77"
 dependencies = [
  "cfg-if",
  "libc",
@@ -152,15 +130,6 @@ checksum = "d8236966eb5e7a1eb957e53922fcb614e4d49131b67397448e78c9dff07e5711"
 dependencies = [
  "tracing",
  "x11rb",
-]
-
-[[package]]
-name = "litrs"
-version = "0.2.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f9275e0933cf8bb20f008924c0cb07a0692fe54d8064996520bf998de9eb79aa"
-dependencies = [
- "proc-macro2",
 ]
 
 [[package]]
@@ -326,7 +295,6 @@ checksum = "02c37acedaa315a501a75d8856485552e5c9a007b62858b7d403d2eac1414ba0"
 name = "rufetch"
 version = "0.1.0"
 dependencies = [
- "bunt",
  "dirs",
  "libwmctl",
  "local-ip",
@@ -369,15 +337,6 @@ dependencies = [
  "libc",
  "nom",
  "winapi 0.3.9",
-]
-
-[[package]]
-name = "termcolor"
-version = "1.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2dfed899f0eb03f32ee8c6a0aabdb8a7949659e3466561fc0adf54e26d88c5f4"
-dependencies = [
- "winapi-util",
 ]
 
 [[package]]
@@ -482,15 +441,6 @@ name = "winapi-i686-pc-windows-gnu"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6"
-
-[[package]]
-name = "winapi-util"
-version = "0.1.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "70ec6ce85bb158151cae5e5c87f95a8e97d2c0c4b001223f33a334e3ce5de178"
-dependencies = [
- "winapi 0.3.9",
-]
 
 [[package]]
 name = "winapi-wsapoll"

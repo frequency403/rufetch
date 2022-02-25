@@ -1,5 +1,5 @@
 pub use libwmctl::prelude::WmCtl;
-use std::process::Command;
+use std::{process::Command, fs};
 use systemstat::Duration;
 pub fn kernel_ident() -> String {
     let cat = Command::new("cat")
@@ -38,7 +38,7 @@ pub fn windowmanager() -> String {
     let wwm = wm_name;
     return wwm;
 }
-pub fn disto() -> String {
+pub fn get_current_distro() -> String {
     let mut ret = String::new();
     let dis = nixinfo::distro();
     ret.push_str(dis.unwrap().replace("\"", "").as_str());
@@ -148,4 +148,73 @@ pub fn getfont() -> String {
     ooc = String::from(ooc.split(':').take(1).collect::<Vec<_>>()[0].to_string());
     ooc = ooc.replace(".ttf", "");
     return ooc;
+}
+pub fn create_missing_dir(path: String) -> std::io::Result<()> {
+    fs::create_dir(path)?;
+    Ok(())
+} 
+pub fn create_config_file(mut path: String) -> std::io::Result<()> {
+    //let mut defpath = String::from(path);
+    path.push_str("/rufetch.conf");
+    fs::write(path, "
+>┌─────────Hardware Information───────────
+-  model
+-  cpu
+-﬙  gpu
+#  disk
+#Unimplemented yet.
+-塞 memory
+- resolution
+#  battery
+>├─────────Software Information───────────
+-  users
+-  distro
+# Just get your distro's logo of nerdfonts.com
+-  kernel
+-  de
+-  wm
+-  shell
+-  term
+-  font
+-  packages
+-  uptime
+-  cp_usage
+-  public_ip
+-🕐 locale  
+# This only works on glibc systems.
+>└─────────────────────────────────────────")?;
+    Ok(())
+}
+pub fn create_gen_ascii(mut path: String) -> std::io::Result<()> {
+    //let mut defpath = String::from(path);
+    path.push_str("/distros/default.ascii");
+    fs::write(path, "        R RR RR                  |
+              R RRRRRRRR R          R     |
+ R RR       R RRRRRRRRRRRRR R      RR     |
+rR RRR    R RRRRRRRRRRRRRRRRR R   RRR R   |
+RRR RR   RRRRRRRRRRRRRRRRRRRRRRR  RRRRR   |
+ RRRRR  RRRRRRRRRRRRRRRRRRRRRRRR  RRRR    |
+  RRR RRRRRRRRRRRRRRRRRRRRRRRRRRRR RR     |
+    R  RRRRRRRRRR  RR  RRRRRRRRRRR        |
+     RRRRRRRRRRRR   RR  RRRRRRRRRR        |
+      RRRRRRRRRRR   RR   RRRRRRRRRR       |
+     RR==RRRRRRRRRRRRRRRRRRRRRR===RR      |
+     RR =  ==RRRRRRR  RRRRRR==  = RR      |
+      RR =     ===========     = RR       |
+       RR                        R        |
+        R                       R         |
+         R                                |
+                                          |
+                                          |
+                                          |
+                                          |
+                                          |
+                                          |
+                                          |
+                                          |")?;
+    Ok(())
+}
+pub fn does_this_exist(filepath: &String) -> bool{
+    let x: bool = std::path::Path::new(filepath).exists();
+    return x;
 }
