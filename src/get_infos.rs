@@ -156,8 +156,8 @@ pub fn create_missing_dir(path: String) -> std::io::Result<()> {
 pub fn create_config_file(mut path: String) -> std::io::Result<()> {
     //let mut defpath = String::from(path);
     path.push_str("/rufetch.conf");
-    fs::write(path, "
->┌─────────Hardware Information───────────
+    fs::write(path, 
+">┌─────────Hardware Information───────────
 -  model
 -  cpu
 -﬙  gpu
@@ -188,7 +188,8 @@ pub fn create_config_file(mut path: String) -> std::io::Result<()> {
 pub fn create_gen_ascii(mut path: String) -> std::io::Result<()> {
     //let mut defpath = String::from(path);
     path.push_str("/distros/default.ascii");
-    fs::write(path, "        R RR RR                  |
+    fs::write(path,
+         "                 R RR RR                  |
               R RRRRRRRR R          R     |
  R RR       R RRRRRRRRRRRRR R      RR     |
 rR RRR    R RRRRRRRRRRRRRRRRR R   RRR R   |
