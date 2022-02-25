@@ -2,6 +2,14 @@
 name = "rufetch"
 version = "0.1.0"
 edition = "2021"
+authors = ["Oliver Schantz <frequency403@gmail.com>"]
+description = "Rufetch - The rust clone of neofetch!"
+documentation = "https://github.com/frequency403/rufetch"
+homepage = "https://github.com/frequency403/rufetch"
+readme = "README.md"
+license-file = "LICENSE"
+keywords = ["neofetch", "fetch", "systeminfo", "rufetch", "clone", "systemfetch"]
+categories = ["commandline-utilities", "fetch", "terminalcandy"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
