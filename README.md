@@ -4,7 +4,6 @@ Rufetch - A Neofetch rust clone
 Goals: 
 - Faster load on all systems unlike the slow original
 - Same functionality like the original
-- Binary version - easy to install
 - Get as famous as neofetch!
 
 Reached:
