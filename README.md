@@ -17,5 +17,6 @@ Reached:
 TO DO:
 
 - Implement the Disk usage function
-- Implement Colors
+- Implement Colors appropriate for the running distribution
 - Distrologo sould be switched with pictures
+- Change colors as user wants them.
