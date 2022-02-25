@@ -118,6 +118,7 @@ fn main() -> std::io::Result<()> {
                     "public_ip" => outputline = outputline.replace("public_ip", getip().as_str()),
                     "locale" => outputline = outputline.replace("locale", getlocale().as_str()),
                     "users" => outputline = outputline.replace("users", getusr().as_str()),
+                    "cp_usage" => outputline = outputline.replace("cp_usage", get_cpu_load().as_str()),
                     "font" => outputline = outputline.replace("font", getfont().as_str()),
                     //"disk" => {outputline = outputline.replace("disk", getdisk().as_str())}
                     "battery" => outputline = outputline.replace("battery", getbat().as_str()),

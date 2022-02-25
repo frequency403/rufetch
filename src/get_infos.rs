@@ -67,6 +67,9 @@ pub fn pkgmgr() -> String {
 pub fn getip() -> String {
     return local_ip::get().unwrap().to_string();
 }
+pub fn get_cpu_load() -> String {
+    return sys_info::loadavg().unwrap().one.to_string();
+}
 pub fn getlocale() -> String {
     let cat = Command::new("cat")
         .arg("/etc/timezone")
