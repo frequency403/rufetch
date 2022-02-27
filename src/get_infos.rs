@@ -13,7 +13,7 @@ pub fn kernel_ident() -> String {
     ooc = String::from(ooc.trim());
     return ooc;
 }
-pub fn get_screen_res() -> String {
+pub fn get_screen_res() -> String { //find other method
     let wmctl = WmCtl::connect().unwrap();
     let mut screenres = String::new();
     screenres.push_str(" ");
