@@ -32,12 +32,6 @@ pub fn lifespan() -> String {
     let upt = nixinfo::uptime();
     return upt.unwrap();
 }
-pub fn windowmanager() -> String {
-    let wmctl = WmCtl::connect().unwrap();
-    let (_, wm_name) = wmctl.winmgr().unwrap();
-    let wwm = wm_name;
-    return wwm;
-}
 pub fn get_current_distro() -> String {
     let mut ret = String::new();
     let dis = nixinfo::distro();
@@ -175,7 +169,6 @@ pub fn create_config_file(mut path: String) -> std::io::Result<()> {
 # Just get your distro's logo of nerdfonts.com
 -  kernel
 -  de
--  wm
 -  shell
 -  term
 -  font

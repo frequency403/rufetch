@@ -103,9 +103,6 @@ fn main() -> std::io::Result<()> {
                     "resolution" => {
                         outputline = outputline.replace("resolution", get_screen_res().as_str());
                     }
-                    "wm" => {
-                        outputline = outputline.replace("wm", windowmanager().as_str());
-                    }
                     "distro" => {
                         outputline = outputline.replace("distro", get_current_distro().as_str());
                     }
