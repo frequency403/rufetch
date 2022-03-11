@@ -1,4 +1,6 @@
 pub use libwmctl::prelude::WmCtl;
+use libmacchina::traits::GeneralReadout as _;
+use libmacchina::GeneralReadout;
 use std::{process::Command, fs};
 use systemstat::Duration;
 pub fn kernel_ident() -> String {
@@ -14,14 +16,10 @@ pub fn kernel_ident() -> String {
     return ooc; 
 }
 pub fn get_screen_res() -> String { //find other method
-    let wmctl = WmCtl::connect().unwrap();
-    let mut screenres = String::new();
-    screenres.push_str(" ");
-    screenres.push_str(wmctl.width().to_string().as_str());
-    screenres.push_str(" x ");
-    screenres.push_str(wmctl.height().to_string().as_str());
+    let genr = GeneralReadout::new();
+    let res = genr.resolution().unwrap();
+    return res
 
-    return screenres;
 }
 
 pub fn cpucores() -> String {
@@ -59,7 +57,16 @@ pub fn pkgmgr() -> String {
     return nixinfo::packages("pacman").unwrap();
 }
 pub fn getip() -> String {
-    return local_ip::get().unwrap().to_string();
+    let cat = Command::new("curl")
+    .arg("ifconfig.me")
+    .output()
+    .expect("NoPe (=");
+let mut ooc = String::new();
+for ins in cat.stdout {
+    ooc.push(ins as char)
+}
+ooc = String::from(ooc.trim());
+return ooc;
 }
 pub fn get_cpu_load() -> String {
     return sys_info::loadavg().unwrap().one.to_string();
