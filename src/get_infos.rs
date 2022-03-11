@@ -11,7 +11,7 @@ pub fn kernel_ident() -> String {
         ooc.push(ins as char)
     }
     ooc = String::from(ooc.trim());
-    return ooc;
+    return ooc; 
 }
 pub fn get_screen_res() -> String { //find other method
     let wmctl = WmCtl::connect().unwrap();
