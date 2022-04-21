@@ -274,7 +274,11 @@ dependencies = [
  "nix 0.23.1",
  "num_cpus",
  "os-release",
+<<<<<<< HEAD
  "regex 1.5.4",
+=======
+ "regex 1.5.5",
+>>>>>>> 17d60f4cfd048f0e363812340df1349b026975d6
  "sqlite",
  "sysctl",
  "walkdir",
@@ -528,9 +532,15 @@ dependencies = [
 
 [[package]]
 name = "regex"
+<<<<<<< HEAD
 version = "1.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d07a8629359eb56f1e2fb1652bb04212c072a87ba68546a04065d525673ac461"
+=======
+version = "1.5.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1a11647b6b25ff05a515cb92c365cec08801e83423a235b51e231e1808747286"
+>>>>>>> 17d60f4cfd048f0e363812340df1349b026975d6
 dependencies = [
  "aho-corasick 0.7.18",
  "memchr 2.4.1",
@@ -651,9 +661,15 @@ dependencies = [
 
 [[package]]
 name = "sysctl"
+<<<<<<< HEAD
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "feb3f7a32e17639e3705d2e05da40f485877cb97fdf0f3240e519e525e6cdb4d"
+=======
+version = "0.4.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1123645dfaf2b5eac6b6c88addafc359c789b8ef2a770ecaef758c1ddf363ea4"
+>>>>>>> 17d60f4cfd048f0e363812340df1349b026975d6
 dependencies = [
  "bitflags",
  "byteorder",
