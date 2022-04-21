@@ -22,8 +22,4 @@ sys-info = "0.9.1"
 nixinfo = "*"
 libwmctl = "*"
 local-ip = "*"
-<<<<<<< HEAD
 libmacchina = "*"
-=======
-libmacchina = "*"
->>>>>>> 17d60f4cfd048f0e363812340df1349b026975d6
