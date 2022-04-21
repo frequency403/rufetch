@@ -1,6 +1,9 @@
 pub use libwmctl::prelude::WmCtl;
 use std::{process::Command, fs};
 use systemstat::Duration;
+use libmacchina::{GeneralReadout};
+//
+
 pub fn kernel_ident() -> String {
     let cat = Command::new("cat")
         .arg("/proc/sys/kernel/osrelease")
@@ -14,14 +17,17 @@ pub fn kernel_ident() -> String {
     return ooc;
 }
 pub fn get_screen_res() -> String { //find other method
-    let wmctl = WmCtl::connect().unwrap();
+    /*let wmctl = WmCtl::connect().unwrap();
     let mut screenres = String::new();
     screenres.push_str(" ");
     screenres.push_str(wmctl.width().to_string().as_str());
     screenres.push_str(" x ");
-    screenres.push_str(wmctl.height().to_string().as_str());
+    screenres.push_str(wmctl.height().to_string().as_str());*/
 
-    return screenres;
+    use libmacchina::traits::GeneralReadout as _;
+    let general_readout = GeneralReadout::new();
+    let resolution = general_readout.resolution().unwrap();
+    return resolution;
 }
 
 pub fn cpucores() -> String {
