@@ -117,12 +117,14 @@ fn main() -> std::io::Result<()> {
                     "users" => outputline = outputline.replace("users", getusr().as_str()),
                     "cp_usage" => outputline = outputline.replace("cp_usage", get_cpu_load().as_str()),
                     "font" => outputline = outputline.replace("font", getfont().as_str()),
-                    //"disk" => {outputline = outputline.replace("disk", getdisk().as_str())}
+                    "disk" => outputline = outputline.replace("disk", getdisk().as_str()),
                     "battery" => outputline = outputline.replace("battery", getbat().as_str()),
+                    //"shell" => outputline = outputline.replace("shell", get_shell().as_str()),
                     _ => (),
                 }
             }
             formatvec2.push(outputline);
+            //formatvec2.push('\n'.to_string());
         }
     }
 // ################################################################################################# Logopath to file as String
@@ -177,5 +179,22 @@ fn main() -> std::io::Result<()> {
             .spawn()
             .expect("Printing Failed!");
     }
+    
+    /*for item in formatvec1 {
+        std::process::Command::new("printf")
+            .arg(item)
+            .spawn()
+            .expect("Printing Failed!");
+    }
+    std::process::Command::new("printf")
+            .arg("\\e[0m")
+            .spawn()
+            .expect("Printing Failed!");
+    for item in formatvec2 {
+                std::process::Command::new("printf")
+                    .arg(item)
+                    .spawn()
+                    .expect("Printing Failed!");
+            }*/
     return Ok(());
 }

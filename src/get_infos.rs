@@ -16,6 +16,12 @@ pub fn kernel_ident() -> String {
     ooc = String::from(ooc.trim());
     return ooc; 
 }
+pub fn get_shell() -> String {
+    use libmacchina::traits::GeneralReadout as _;
+    let general_readout = GeneralReadout::new();
+    let shell = general_readout.shell(libmacchina::traits::ShellFormat::Relative, libmacchina::traits::ShellKind::Current).unwrap();
+    return shell;
+}
 pub fn get_screen_res() -> String { //find other method
     /*let wmctl = WmCtl::connect().unwrap();
     let mut screenres = String::new();
@@ -26,7 +32,9 @@ pub fn get_screen_res() -> String { //find other method
 
     use libmacchina::traits::GeneralReadout as _;
     let general_readout = GeneralReadout::new();
-    let resolution = general_readout.resolution().unwrap();
+    let mut resolution = String::new();
+    resolution.push(' ');
+    resolution.push_str(general_readout.resolution().unwrap().replace(",", " x").as_str());
     return resolution;
 }
 
@@ -91,24 +99,14 @@ pub fn getlocale() -> String {
     ooc = String::from(ooc.trim());
     return ooc;
 }
-/*pub fn getdisk() -> String {
-   let sys = systemstat::System::new();
-   let mut res = String::new();
-   let ava: u64 = 0;
-   let tot: u64 = 0;
-
-   match sys.mount_at("/") {
-            Ok(mounts) => {res.push_str("/root: ");
-                                     ava = mounts.avail.as_u64(); tot = mounts.total.as_u64();
-                                     ava = ava.try_into().unwrap() * 0.000000001; tot = tot.try_into().unwrap() * 0.000000001 ;
-                                     res.push_str(ava.to_string().as_str());
-                                     res.push_str("GB used | ");
-                                     res.push_str(tot.to_string().as_str());
-                                     res.push_str("GB total")}
-            Err(x) => {res.push_str("Error detecting Filesystems")}
-   }
-   return res;
-}*/
+pub fn getdisk() -> String {
+    use libmacchina::traits::GeneralReadout as _;
+    let general_readout = GeneralReadout::new();
+    let mut space = String::new();
+    space.push_str(general_readout.disk_space().unwrap().0.to_string().as_str());
+    space.push_str(general_readout.disk_space().unwrap().1.to_string().as_str());
+    return space;
+}
 pub fn getbat() -> String {
     let mut there = String::new();
     let cap: f32 = 0.00;
@@ -173,8 +171,7 @@ pub fn create_config_file(mut path: String) -> std::io::Result<()> {
 -  model
 -  cpu
 -﬙  gpu
-#  disk
-#Unimplemented yet.
+-  disk
 -塞 memory
 - resolution
 #  battery
