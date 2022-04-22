@@ -1,7 +1,7 @@
 pub use libwmctl::prelude::WmCtl;
 use std::{process::Command, fs};
 use systemstat::Duration;
-use libmacchina::{GeneralReadout};
+use libmacchina::{GeneralReadout, MemoryReadout};
 //
 
 pub fn kernel_ident() -> String {
@@ -19,17 +19,11 @@ pub fn kernel_ident() -> String {
 pub fn get_shell() -> String {
     use libmacchina::traits::GeneralReadout as _;
     let general_readout = GeneralReadout::new();
-    let shell = general_readout.shell(libmacchina::traits::ShellFormat::Relative, libmacchina::traits::ShellKind::Current).unwrap();
+    let mut shell = general_readout.shell(libmacchina::traits::ShellFormat::Relative, libmacchina::traits::ShellKind::Current).unwrap();
+    shell.pop();
     return shell;
 }
-pub fn get_screen_res() -> String { //find other method
-    /*let wmctl = WmCtl::connect().unwrap();
-    let mut screenres = String::new();
-    screenres.push_str(" ");
-    screenres.push_str(wmctl.width().to_string().as_str());
-    screenres.push_str(" x ");
-    screenres.push_str(wmctl.height().to_string().as_str());*/
-
+pub fn get_screen_res() -> String { 
     use libmacchina::traits::GeneralReadout as _;
     let general_readout = GeneralReadout::new();
     let mut resolution = String::new();
@@ -39,12 +33,45 @@ pub fn get_screen_res() -> String { //find other method
 }
 
 pub fn cpucores() -> String {
-    let ce = rin_sys::get_cpu_info();
-    return ce.model_name;
+    use libmacchina::traits::GeneralReadout as _;
+    let general_readout = GeneralReadout::new();
+    let mut modl = general_readout.cpu_model_name().unwrap().to_string();
+    modl.push_str(" (");
+    modl.push_str(general_readout.cpu_usage().unwrap().to_string().as_str());
+    modl.push_str("%% Usage)");
+    return modl;
 }
 pub fn lifespan() -> String {
-    let upt = nixinfo::uptime();
-    return upt.unwrap();
+    use libmacchina::traits::GeneralReadout as _;
+    let general_readout = GeneralReadout::new();
+    let mut gg = general_readout.uptime().unwrap() as f64;
+    gg = gg / 60.0 / 60.0;
+    let upt: Vec<char> = gg.to_string().chars().collect();
+    let mut ut = String::new();
+    
+    if upt[1] == '.' {
+        ut.push(upt[0]);
+        ut.push_str(" Hours and ");
+        ut.push(upt[2]);
+        ut.push(upt[3]);
+        ut.push_str(" Minutes");
+    } else if upt[2] == '.' {
+        ut.push(upt[0]);
+        ut.push(upt[1]);
+        ut.push_str(" Hours and ");
+        ut.push(upt[3]);
+        ut.push(upt[4]);
+        ut.push_str(" Minutes");
+    }else {
+        ut.push(upt[0]);
+        ut.push(upt[1]);
+        ut.push_str(" Hours and ");
+        ut.push(upt[3]);
+        ut.push(upt[4]);
+        ut.push_str(" Minutes");
+
+    }
+    return ut;
 }
 pub fn get_current_distro() -> String {
     let mut ret = String::new();
@@ -64,7 +91,19 @@ pub fn getterminal() -> String {
     return nixinfo::terminal().unwrap();
 }
 pub fn meminfo() -> String {
-    return nixinfo::memory().unwrap();
+    use libmacchina::traits::MemoryReadout as _;
+    let memread = MemoryReadout::new();
+    let mused = (memread.used().unwrap() / 1024) as f64;
+    let mtot = (memread.total().unwrap() / 1024) as f64;
+    let perc = (mused as f64/ mtot as f64) * 100.0;
+    let mut mems = String::from(mused.to_string());
+    mems.push_str(" MiB | ");
+    mems.push_str(mtot.to_string().as_str());
+    mems.push_str(" MiB (");
+    mems.push_str(perc.round().to_string().as_str());
+    mems.push_str("%% Used)");
+
+    return mems;
 }
 pub fn desktopenvironment() -> String {
     return nixinfo::environment().unwrap();
@@ -84,9 +123,6 @@ for ins in cat.stdout {
 ooc = String::from(ooc.trim());
 return ooc;
 }
-pub fn get_cpu_load() -> String {
-    return sys_info::loadavg().unwrap().one.to_string();
-}
 pub fn getlocale() -> String {
     let cat = Command::new("cat")
         .arg("/etc/timezone")
@@ -102,9 +138,19 @@ pub fn getlocale() -> String {
 pub fn getdisk() -> String {
     use libmacchina::traits::GeneralReadout as _;
     let general_readout = GeneralReadout::new();
+    let used = general_readout.disk_space().unwrap().0 / 1024 / 1024 / 1024;
+    let avail = general_readout.disk_space().unwrap().1 / 1024 / 1024 / 1024;
+    let perc = ((used as f64/ avail as f64) * 100.0).round() as i64;
     let mut space = String::new();
-    space.push_str(general_readout.disk_space().unwrap().0.to_string().as_str());
-    space.push_str(general_readout.disk_space().unwrap().1.to_string().as_str());
+    space.push_str(used.to_string().as_str());
+    space.push_str(" GB  | ");
+    space.push_str(avail.to_string().as_str());
+    space.push_str(" GB (");
+    space.push_str(perc.to_string().as_str());
+    //space.push_str("%");
+    space.push_str("%%)");
+    //space.push_str(general_readout.disk_space().unwrap().0.to_string().as_str());
+    //space.push_str(general_readout.disk_space().unwrap().1.to_string().as_str());
     return space;
 }
 pub fn getbat() -> String {

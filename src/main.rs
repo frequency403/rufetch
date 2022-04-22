@@ -8,6 +8,7 @@ use std::path::Path;
 fn main() -> std::io::Result<()> {
 // ##################################################################################### Clear screen for better printing
     std::process::Command::new("clear")
+        //.arg("\\e2J\\e[H")
         .spawn()
         .expect("What the fuck?"); // Seriously, why in hell should the command fail?
 
@@ -37,7 +38,6 @@ fn main() -> std::io::Result<()> {
         "font",
         "packages",
         "uptime",
-        "cp_usage",
         "public_ip",
         "locale",
     ];
@@ -115,11 +115,10 @@ fn main() -> std::io::Result<()> {
                     "public_ip" => outputline = outputline.replace("public_ip", getip().as_str()),
                     "locale" => outputline = outputline.replace("locale", getlocale().as_str()),
                     "users" => outputline = outputline.replace("users", getusr().as_str()),
-                    "cp_usage" => outputline = outputline.replace("cp_usage", get_cpu_load().as_str()),
                     "font" => outputline = outputline.replace("font", getfont().as_str()),
                     "disk" => outputline = outputline.replace("disk", getdisk().as_str()),
                     "battery" => outputline = outputline.replace("battery", getbat().as_str()),
-                    //"shell" => outputline = outputline.replace("shell", get_shell().as_str()),
+                    "shell" => outputline = outputline.replace("shell", get_shell().as_str()),
                     _ => (),
                 }
             }
@@ -145,56 +144,67 @@ fn main() -> std::io::Result<()> {
             match distroiter.contains(&dchk[0]){ // ############################################### Fallback to default if logo is not present.
                     true  => {if does_this_exist(&logodircheck) == true {logopath.push_str(dchk[0]);logopath.push_str(".ascii");} else {logopath.push_str("default.ascii")}},
                     false => logopath.push_str("default.ascii"),
-            }
-// ################################################################################################# Read logofile line by line, replacing "|" with 2 fields cursor move        
+            }     
         let fle = File::open(&logopath);
         let dreader = BufReader::new(fle.unwrap());
+        let ascii_counter = 42;
         for dline in dreader.lines() {
             let mut asciiline = String::from(dline?);
-            asciiline = asciiline.replace("|", "\\e[2C");
-            formatvec1.push(asciiline);
+                while asciiline.len() < ascii_counter {
+                    asciiline.push(' ');
+                };
+            formatvec1.push(asciiline);//43 Chars in width
         }
-// ################################################################################################# Declaring Counters for adding logo line with info line
-    let mut coun1 = 0;
-    let mut coun2 = 0;
-    let cap = 25;
-    while coun1 <= cap {
-        formatvec1.push(" ".to_string());
-        coun1 += 1;
-    }
-    while coun2 <= cap {
-        formatvec2.push(" ".to_string());
-        coun2 += 1;
-    }
-// ################################################################################################# Add 24 lines, with or without information together as String
-    for i in 0..cap {
-        let mut final_result = String::new(); //Both combined
-        final_result.push_str(formatvec1[i].as_str());
-
-        final_result.push_str(formatvec2[i].as_str());
-        final_result.push_str("\n");
-        // ######################################################################################### Execute "printf" command - so that the cursor movement is recognized.
-        std::process::Command::new("printf")
-            .arg(final_result)
-            .spawn()
+    while formatvec1.len() < formatvec2.len() {
+        let mut filler = String::new();
+            while filler.len() < ascii_counter {
+                filler.push(' ');
+            }
+        formatvec1.push(filler); 
+    }  
+    std::process::Command::new("printf")
+    .arg("\\e[?25l")
+        .spawn()
             .expect("Printing Failed!");
-    }
-    
-    /*for item in formatvec1 {
+
+    for item in formatvec1 {
         std::process::Command::new("printf")
             .arg(item)
             .spawn()
             .expect("Printing Failed!");
-    }
-    std::process::Command::new("printf")
-            .arg("\\e[0m")
+            std::process::Command::new("printf")
+            .arg("\\e[1E")
             .spawn()
             .expect("Printing Failed!");
+        
+    }
+    std::process::Command::new("printf")
+    .arg("\\e[H")
+    .spawn()
+    .expect("What the fuck?");
+
     for item in formatvec2 {
-                std::process::Command::new("printf")
-                    .arg(item)
-                    .spawn()
+        let mut cursor_mover_escapecode = String::new();
+        cursor_mover_escapecode.push_str("\\e[");
+        cursor_mover_escapecode.push_str(ascii_counter.to_string().as_str());
+        cursor_mover_escapecode.push('C');
+        std::process::Command::new("printf")
+            .arg(cursor_mover_escapecode)
+                .spawn()
                     .expect("Printing Failed!");
-            }*/
+        std::process::Command::new("printf")
+            .arg(item)
+                .spawn()
+                    .expect("Printing Failed!");
+        std::process::Command::new("printf")
+            .arg("\\e[1E")
+                .spawn()
+                    .expect("Printing Failed!");
+    }
+    //println! ("{}", get_shell());
+    std::process::Command::new("printf")
+    .arg("\\e[?25h")
+        .spawn()
+            .expect("Printing Failed!");
     return Ok(());
 }
